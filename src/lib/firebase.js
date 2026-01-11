@@ -14,7 +14,11 @@ const firebaseConfig = {
 // Initialize Firebase
 let app, auth, db;
 
-if (firebaseConfig.apiKey) {
+if (
+  firebaseConfig.apiKey &&
+  typeof firebaseConfig.apiKey === 'string' &&
+  firebaseConfig.apiKey.startsWith('AIza')
+) {
   try {
     app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
     auth = getAuth(app);
@@ -23,7 +27,7 @@ if (firebaseConfig.apiKey) {
     console.error("Firebase initialization error:", error);
   }
 } else {
-  console.warn("Firebase configuration missing. App will not work until environment variables are set.");
+  console.warn("Firebase configuration missing or invalid. App will not work until environment variables are set.");
 }
 
 export { app, auth, db };
