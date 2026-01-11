@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "tracker": "tracker-e87b4",
+    "tracker-win": "trackerwin"
+  },
+  "targets": {},
+  "etags": {}
+}

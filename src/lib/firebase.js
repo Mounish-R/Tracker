@@ -12,7 +12,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-let app, auth, db, initError;
+let app, auth, db;
 
 if (
   firebaseConfig.apiKey &&
@@ -24,10 +24,9 @@ if (
     db = getFirestore(app);
   } catch (error) {
     console.error("Firebase initialization error:", error);
-    initError = error;
   }
 } else {
   console.warn("Firebase configuration missing or invalid.");
 }
 
-export { app, auth, db, initError };
+export { app, auth, db };
