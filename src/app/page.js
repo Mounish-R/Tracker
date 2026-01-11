@@ -19,12 +19,27 @@ export default function Home() {
 
   // Auth Listener
   useEffect(() => {
+    if (!auth) {
+      setLoadingUser(false);
+      return;
+    }
     const unsubscribe = onAuthStateChanged(auth, (u) => {
       setUser(u);
       setLoadingUser(false);
     });
     return () => unsubscribe();
   }, []);
+
+  if (!auth) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center p-8 text-center">
+        <h1 className="text-3xl font-bold mb-4">Setup Required</h1>
+        <p className="max-w-md text-[var(--text-muted)]">
+          Firebase configuration is missing. Please set the environment variables in your Vercel project settings.
+        </p>
+      </div>
+    );
+  }
 
   // Task Data Hook
   const { tasks, loading: loadingTasks, addTask, completeTask, failTask } = useTasks(user);

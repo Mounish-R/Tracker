@@ -9,7 +9,7 @@ export function useTasks(user) {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (!user) {
+        if (!user || !db) {
             setTasks([]);
             setLoading(false);
             return;
