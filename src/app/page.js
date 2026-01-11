@@ -32,11 +32,42 @@ export default function Home() {
 
   if (!auth) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center p-8 text-center">
-        <h1 className="text-3xl font-bold mb-4">Setup Required</h1>
-        <p className="max-w-md text-[var(--text-muted)]">
-          Firebase configuration is missing. Please set the environment variables in your Vercel project settings.
+      <div className="flex min-h-screen flex-col items-center justify-center p-8 text-center bg-[#09090b] text-white">
+        <h1 className="text-3xl font-bold mb-4 text-red-500">Setup Required</h1>
+        <p className="max-w-md text-gray-400 mb-8">
+          Firebase configuration is missing or invalid.
         </p>
+
+        <div className="bg-black/40 p-6 rounded-xl border border-white/10 text-left font-mono text-sm min-w-[300px]">
+          <h3 className="text-gray-200 font-semibold mb-4 border-b border-white/10 pb-2">Debug Checklist:</h3>
+
+          <div className="space-y-2">
+            <DebugItem label="API Key" value={process.env.NEXT_PUBLIC_FIREBASE_API_KEY} expected="Starts with AIza" />
+            <DebugItem label="Auth Domain" value={process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN} />
+            <DebugItem label="Project ID" value={process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID} />
+            <DebugItem label="Storage Bucket" value={process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET} />
+            <DebugItem label="Sender ID" value={process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID} />
+            <DebugItem label="App ID" value={process.env.NEXT_PUBLIC_FIREBASE_APP_ID} />
+          </div>
+
+          <div className="mt-6 pt-4 border-t border-white/10 text-xs text-gray-500">
+            <p>Status: {process.env.NEXT_PUBLIC_FIREBASE_API_KEY ? 'Variables Detected' : 'No Variables Found'}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function DebugItem({ label, value, expected }) {
+    const isSet = !!value;
+    const isValid = expected ? value?.trim().startsWith('AIza') : true;
+
+    return (
+      <div className="flex justify-between items-center gap-4">
+        <span className="text-gray-400">{label}:</span>
+        <span className={isSet && isValid ? "text-green-400" : "text-red-400"}>
+          {isSet ? (isValid ? "OK" : "Invalid") : "MISSING"}
+        </span>
       </div>
     );
   }

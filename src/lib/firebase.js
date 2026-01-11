@@ -16,8 +16,7 @@ let app, auth, db;
 
 if (
   firebaseConfig.apiKey &&
-  typeof firebaseConfig.apiKey === 'string' &&
-  firebaseConfig.apiKey.startsWith('AIza')
+  String(firebaseConfig.apiKey).trim().startsWith('AIza')
 ) {
   try {
     app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
