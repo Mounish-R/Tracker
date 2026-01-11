@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { auth } from '@/lib/firebase';
+import { auth, initError } from '@/lib/firebase';
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
 import TaskInput from '@/components/TaskInput';
 import TaskItem from '@/components/TaskItem';
@@ -52,6 +52,13 @@ export default function Home() {
 
           <div className="mt-6 pt-4 border-t border-white/10 text-xs text-gray-500">
             <p>Status: {process.env.NEXT_PUBLIC_FIREBASE_API_KEY ? 'Variables Detected' : 'No Variables Found'}</p>
+            {initError && (
+              <div className="mt-4 p-3 bg-red-900/50 text-red-200 rounded text-left overflow-auto">
+                <p className="font-bold">Initialization Error:</p>
+                <pre>{initError.message}</pre>
+                <pre>{JSON.stringify(initError.customData, null, 2)}</pre>
+              </div>
+            )}
           </div>
         </div>
       </div>
