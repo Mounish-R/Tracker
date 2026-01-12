@@ -1,21 +1,60 @@
 @import "tailwindcss";
 
+
 :root {
+  /* Default Dark Mode */
   --background: #09090b;
   --foreground: #fafafa;
-  --card-bg: rgba(255, 255, 255, 0.03);
-  --card-border: rgba(255, 255, 255, 0.15);
-  /* Increased contrast */
+  --card-bg: rgba(18, 18, 20, 0.4);
+  /* Dark Glass */
+  --card-border: rgba(255, 255, 255, 0.08);
+  /* Fainter border */
+  --input-bg: rgba(10, 10, 13, 0.6);
+  --input-border: var(--card-border);
   --primary: #6366f1;
   --primary-hover: #4f46e5;
-  --primary-glow: 0 0 40px rgba(99, 102, 241, 0.2);
   --success: #10b981;
   --error: #f43f5e;
   --text-muted: #a1a1aa;
+
+  /* Background Gradients (Dark) */
+  --bg-gradient-start: #050505;
+  --bg-gradient-end: #000;
+  --blob-color-1: rgba(99, 102, 241, 0.03);
+  --blob-color-2: rgba(244, 63, 94, 0.03);
+
+  --calendar-invert: invert(1);
+
+  /* Enforce Dark Mode for Form Controls */
+  color-scheme: dark;
 }
 
-* {
-  box-sizing: border-box;
+[data-theme='light'] {
+  --background: #ffffff;
+  --foreground: #000000;
+  --card-bg: #ffffff;
+  --card-border: rgba(0, 0, 0, 0.1);
+  /* Crisp black border */
+  --input-bg: #ffffff;
+  --input-border: #000000;
+  /* Distinct border for inputs */
+  --primary: #000000;
+  /* Primary actions in black for mono look? Or keep brand color? Let's keep brand. */
+  --primary-hover: #333333;
+  --success: #059669;
+  --error: #e11d48;
+  --text-muted: #000000;
+  /* High contrast muted */
+
+  /* Background Gradients (Pure White - No Tints) */
+  --bg-gradient-start: #ffffff;
+  --bg-gradient-end: #ffffff;
+  --blob-color-1: transparent;
+  --blob-color-2: transparent;
+
+  --calendar-invert: invert(0);
+
+  color-scheme: light;
 }
 
 body {
@@ -26,42 +65,91 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Background Animation */
+.animated-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  transition: background 0.5s ease;
+}
+
+.animated-bg::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, var(--blob-color-1), transparent 50%),
+    radial-gradient(circle at 80% 20%, var(--blob-color-2), transparent 30%);
+  animation: rotate 60s linear infinite;
+  opacity: 0.7;
+  transition: background 0.5s ease;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Premium Utilities */
 .glass-container {
   background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--card-border);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  /* More subtle border */
+  border-radius: 24px;
+  /* More rounded */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.glass-container:hover {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  border-color: var(--card-border);
+  /* Or a slightly stronger version if needed, but keeping consistent for now */
 }
 
 .btn-primary {
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 1rem 2rem;
-  /* Larger touch target */
   border-radius: 12px;
   font-weight: 600;
   font-size: 1rem;
   letter-spacing: 0.025em;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-  position: relative;
-  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
 .btn-primary:not(:disabled):hover {
-  background: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6);
+  filter: brightness(1.1);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
 }
 
 .btn-primary:disabled {
@@ -70,50 +158,50 @@ body {
   box-shadow: none;
 }
 
-/* Enhanced Input Styles for Visibility */
+/* Enhanced Input Styles */
 input,
 textarea {
-  background: rgba(0, 0, 0, 0.3);
-  /* Darker background for contrast */
+  background: var(--input-bg);
   border: 1px solid var(--card-border);
-  color: #ffffff !important;
-  /* Force white text */
+  color: var(--foreground);
   padding: 1rem 1.25rem;
-  /* Larger padding */
-  border-radius: 12px;
+  border-radius: 16px;
   outline: none;
   font-family: inherit;
-  font-size: 1.1rem;
-  /* Larger font */
+  font-size: 1rem;
   line-height: 1.5;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   width: 100%;
-  min-height: 3.5rem;
-  /* Enforce height */
 }
 
 input:focus,
 textarea:focus {
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--input-bg);
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+  /* Keep shadow but maybe adjust color for light mode if needed? keeping for now */
 }
 
 ::placeholder {
   color: var(--text-muted);
-  opacity: 0.8;
-  font-size: 1rem;
+  opacity: 0.5;
 }
 
-/* Dark Mode Calendar Icon Fix */
+/* Calendar Icon Fix */
 ::-webkit-calendar-picker-indicator {
-  filter: invert(1);
+  filter: var(--calendar-invert, invert(1)) opacity(0.8);
+  /* Uses variable or default invert */
   cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -121,10 +209,27 @@ textarea:focus {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--card-border);
-  border-radius: 4px;
+  background: #333;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+  background: #555;
+}
+
+/* Animations */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-in-scale {
+  animation: fadeInScale 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }

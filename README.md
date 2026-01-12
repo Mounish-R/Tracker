@@ -12,6 +12,8 @@ Tracker is a premium, minimalist goal-tracking application designed to help you 
 - **🎨 Premium Dark Mode**: Glassmorphism UI, smooth animations, and a focus on aesthetics.
 - **🔐 Secure Auth**: Google Sign-In integration.
 - **⏱️ Mission Control**: Set strict deadlines and track them with live countdown timers.
+- **✏️ Quick Edit**: Instantly modify mission details inline without losing focus.
+- **🛡️ Strict Streak**: Missed deadlines act as failures. Reset your streak to zero if you let a timer expire.
 
 ## 🛠️ Tech Stack
 
