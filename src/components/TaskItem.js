@@ -90,7 +90,14 @@ const TaskItem = memo(function TaskItem({ task, onComplete, onFail, onEdit }) {
                             </h4>
                             <div className="flex items-center gap-2 mt-1">
                                 <p className="text-sm text-[var(--text-muted)]">
-                                    Deadline: {new Date(task.deadline).toLocaleString()}
+                                    Deadline: {new Date(task.deadline).toLocaleString('en-US', {
+                                        year: 'numeric',
+                                        month: 'short',
+                                        day: 'numeric',
+                                        hour: 'numeric',
+                                        minute: '2-digit',
+                                        hour12: true
+                                    })}
                                 </p>
                                 {task.status === 'active' && !isExpired && (
                                     <button
